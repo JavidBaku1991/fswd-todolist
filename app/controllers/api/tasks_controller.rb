@@ -1,3 +1,4 @@
+module Api
 class TasksController < ApplicationController
   before_action :validate_user
 
@@ -86,5 +87,6 @@ class TasksController < ApplicationController
     else
       false
     end
+  end
   end
 end
