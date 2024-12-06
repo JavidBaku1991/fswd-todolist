@@ -1,16 +1,19 @@
 Rails.application.routes.draw do
+  # Root route for the application
   root 'static_pages#index'
 
+  # Namespace for API routes
   namespace :api do  
     resources :users, only: [:create]
 
-    get    'tasks'                    => 'tasks#index'
-    post   'tasks'                    => 'tasks#create'
-    get    'tasks/:id'                => 'tasks#show'
-    put    'tasks/:id'                => 'tasks#update'
-    put    'tasks/:id/mark_complete'  => 'tasks#mark_complete'
-    put    'tasks/:id/mark_active'    => 'tasks#mark_active'
-    delete 'tasks/:id'                => 'tasks#destroy'
+    resources :tasks, only: [:index, :create, :show, :update, :destroy] do
+      member do
+        patch :mark_complete
+        patch :mark_active
+      end
+    end
   end
-  
+
+  # Redirect undefined routes to root (for SPA fallback)
+  get '*path', to: redirect('/')
 end
